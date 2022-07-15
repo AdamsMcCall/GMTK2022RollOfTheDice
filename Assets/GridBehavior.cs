@@ -31,4 +31,9 @@ public class GridBehavior : MonoBehaviour
     {
         
     }
+
+    public void GetGridValue(int x, int y)
+    {
+        // Do something
+    }
 }
