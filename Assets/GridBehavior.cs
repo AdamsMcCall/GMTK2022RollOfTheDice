@@ -34,6 +34,6 @@ public class GridBehavior : MonoBehaviour
 
     public void GetGridValue(int x, int y)
     {
-        // Do something
+        print($"get info on {x}, {y};");
     }
 }
