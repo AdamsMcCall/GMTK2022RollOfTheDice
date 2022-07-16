@@ -8,6 +8,6 @@ namespace Assets.Scipts
 {
     public interface ITile
     {
-        void ApplyTileEffect(int value);
+        void ApplyTileEffect(int x, int y, int value);
     }
 }

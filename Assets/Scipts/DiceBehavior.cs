@@ -107,12 +107,14 @@ public class DiceBehavior : MonoBehaviour
         transform.position = new Vector3(transform.position.x + directionVector.x, transform.position.y, transform.position.z + directionVector.y);
         grid_x += (int)directionVector.x;
         grid_y += (int)directionVector.y;
-        grid.GetGridValue(grid_x, grid_y);
+
         currentFace = DirectionHelper.TurnDice(currentFace, direction);
         previewFrontPlane.ChangeFace(currentFace.Up.Value);
         previewRightPlane.ChangeFace(currentFace.Right.Value);
         previewLeftPlane.ChangeFace(currentFace.Left.Value);
         previewBackPlane.ChangeFace(currentFace.Down.Value);
+        
+        grid.ExecuteTile(grid_x, grid_y, currentFace.Value);
     }
 
     IEnumerator TranslateCameraCoroutine(Direction direction)

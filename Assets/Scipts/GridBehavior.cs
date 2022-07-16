@@ -11,12 +11,14 @@ public class GridBehavior : MonoBehaviour
 
     public List<GameObject> TileTypes;
 
-    private List<ITile> Grid;
+    //private List<ITile> TileGrid;
+
+    private ITile[,] TileGrid;
 
     // Start is called before the first frame update
     void Start()
     {
-        Grid = new List<ITile>(Width * Height);
+        TileGrid = new ITile[Width, Height];
 
         foreach (GameObject obj in TileTypes)
         {
@@ -28,12 +30,12 @@ public class GridBehavior : MonoBehaviour
             }
         }
 
-        for (int x = 0; x < Width; ++x)
+        for (int y = 0; y < Height; ++y)
         {
-            for (int y = 0; y < Height; ++y)
+            for (int x = 0; x < Width; ++x)
             {
                 var obj = Instantiate(TileTypes[Random.Range(0, TileTypes.Count)], new Vector3(x, 0, y), Quaternion.identity, transform);
-                Grid.Add(obj.GetComponent(typeof(ITile)) as ITile);
+                TileGrid[x, y] = obj.GetComponent(typeof(ITile)) as ITile;
             }
         }
     }
@@ -47,5 +49,10 @@ public class GridBehavior : MonoBehaviour
     public void GetGridValue(int x, int y)
     {
         print($"get info on {x}, {y};");
+    }
+
+    public void ExecuteTile(int x, int y, int value)
+    {
+        TileGrid[x, y].ApplyTileEffect(x, y, value);
     }
 }

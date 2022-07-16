@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefaultTileBehavior : MonoBehaviour, ITile
+public class DefaultRedTileBehavior : MonoBehaviour, ITile
 {
     public void ApplyTileEffect(int x, int y, int value)
     {
-        print($"Arrived on green tile at {x}, {y} with value {value}");
+        print($"Arrived on red tile at {x}, {y} with value {value}");
     }
 
     // Start is called before the first frame update

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1304265377079163931}
   - component: {fileID: 4071665937450006035}
   - component: {fileID: 3095860731122860431}
-  - component: {fileID: 8090712428203503113}
+  - component: {fileID: 1058937604599320850}
   m_Layer: 0
   m_Name: DefaultTileRed
   m_TagString: Untagged
@@ -99,7 +99,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &8090712428203503113
+--- !u!114 &1058937604599320850
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,6 +108,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8961034938946263673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02a41cbfdb1b3584ea8256587cdf9844, type: 3}
+  m_Script: {fileID: 11500000, guid: c8454abec27b00947b4140c0d298aa32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
