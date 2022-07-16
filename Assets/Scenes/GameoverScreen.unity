@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 43989280}
   - component: {fileID: 43989281}
+  - component: {fileID: 43989282}
   m_Layer: 5
   m_Name: Le Uiiiii
   m_TagString: Untagged
@@ -188,6 +189,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &43989282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43989279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2d968d9895fcf4a9f05c2a8ce810a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replayButton: {fileID: 1180688316}
+  quitbutton: {fileID: 1027747593}
 --- !u!1001 &162159853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -997,7 +1012,6 @@ GameObject:
   - component: {fileID: 1180688318}
   - component: {fileID: 1180688317}
   - component: {fileID: 1180688316}
-  - component: {fileID: 1180688319}
   m_Layer: 5
   m_Name: Play Again
   m_TagString: Untagged
@@ -1108,19 +1122,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180688314}
   m_CullTransparentMesh: 1
---- !u!114 &1180688319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180688314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da2d968d9895fcf4a9f05c2a8ce810a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 1180688316}
 --- !u!1 &1725188612
 GameObject:
   m_ObjectHideFlags: 0
