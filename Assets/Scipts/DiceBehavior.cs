@@ -43,7 +43,10 @@ public class DiceBehavior : MonoBehaviour
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, 0, -1, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(0, -1));
+
         }
+
+        
     }
 
     IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, int x_pos, int z_pos, Vector3 axis)
