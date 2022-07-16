@@ -15,7 +15,11 @@ public class SliderControl : MonoBehaviour
         {
             timer = 1.5f;
             slider.value -= 10;
-        } 
-        
+        }
+
+        if (slider.value == 0)
+        {
+            
+        }
     }
 }
