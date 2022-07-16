@@ -7,6 +7,7 @@ public class SliderControl : MonoBehaviour
 {
     private float timer = 1.5f;
     public Slider slider;
+    public int score = 0;
     void Update()
     {
         timer -= Time.deltaTime;
