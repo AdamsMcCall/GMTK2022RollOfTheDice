@@ -20,7 +20,7 @@ public class DefaultRedTileBehavior : MonoBehaviour, ITile
 
     void Start()
     {
-        Plaisir = GameObject.FindGameObjectsWithTag("Environment").First();
+        Plaisir = GameObject.FindGameObjectsWithTag("Environment")[0];
         SliderScript = Plaisir.GetComponentInChildren<SliderControl>();
         Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
     }
