@@ -15,7 +15,10 @@ public class DiceBehavior : MonoBehaviour
     private bool isRotating = false;
     private bool isTranslating = false;
     private DieFace currentFace;
-    private PreviewPlaneBehavior previewRightPlane;
+    public PreviewPlaneBehavior previewFrontPlane;
+    public PreviewPlaneBehavior previewRightPlane;
+    public PreviewPlaneBehavior previewLeftPlane;
+    public PreviewPlaneBehavior previewBackPlane;
 
     private bool canMove => !isRotating && !isTranslating;
     
@@ -25,8 +28,10 @@ public class DiceBehavior : MonoBehaviour
         grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior; // ne fonctionne pas
         transform.position = new Vector3(grid_x, transform.position.y, grid_y);
         currentFace = DieFace.GenerateDice();
-        previewRightPlane = GetComponentInChildren(typeof(PreviewPlaneBehavior)) as PreviewPlaneBehavior;
+        previewFrontPlane.ChangeFace(currentFace.Up.Value);
         previewRightPlane.ChangeFace(currentFace.Right.Value);
+        previewLeftPlane.ChangeFace(currentFace.Left.Value);
+        previewBackPlane.ChangeFace(currentFace.Down.Value);
     }
 
     // Update is called once per frame
@@ -90,7 +95,10 @@ public class DiceBehavior : MonoBehaviour
         grid_y += (int)directionVector.y;
         grid.GetGridValue(grid_x, grid_y);
         currentFace = DirectionHelper.TurnDice(currentFace, direction);
+        previewFrontPlane.ChangeFace(currentFace.Up.Value);
         previewRightPlane.ChangeFace(currentFace.Right.Value);
+        previewLeftPlane.ChangeFace(currentFace.Left.Value);
+        previewBackPlane.ChangeFace(currentFace.Down.Value);
     }
 
     IEnumerator TranslateCameraCoroutine(Direction direction)
