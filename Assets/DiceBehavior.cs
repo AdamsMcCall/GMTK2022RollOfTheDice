@@ -12,6 +12,7 @@ public class DiceBehavior : MonoBehaviour
     public GameObject Cube;
     public GameObject CameraParent;
     private bool isRotating = false;
+    private bool isTranslating = false;
     
     // Start is called before the first frame update
     void Start()
@@ -23,22 +24,22 @@ public class DiceBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && !isRotating)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && !isRotating && !isTranslating)
         {
             StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, -1, 0, Vector3.forward));
             StartCoroutine(TranslateCameraCoroutine(-1, 0));
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && !isRotating)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && !isRotating&& !isTranslating)
         {
             StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, 1, 0, Vector3.back));
             StartCoroutine(TranslateCameraCoroutine(1, 0));
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && !isRotating)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && !isRotating&& !isTranslating)
         {
             StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, 0, 1, Vector3.right));
             StartCoroutine(TranslateCameraCoroutine(0, 1));
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && !isRotating)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && !isRotating&& !isTranslating)
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, 0, -1, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(0, -1));
@@ -70,20 +71,24 @@ public class DiceBehavior : MonoBehaviour
     IEnumerator TranslateCameraCoroutine(float x_pos,float z_pos)
     {
         isRotating = true;
+        isTranslating = true;
+        
         var startPosition = CameraParent.transform.position;
-        var targetPosition = new Vector3(CameraParent.)
-        // for (float i = 0; i < 90; i += 1)
-        // {
-        //     CameraParent.transform.position = Vector3.Lerp(startPosition,
-        //         new Vector3(
-        //             CameraParent.transform.position.x + x_pos,
-        //             CameraParent.transform.position.y, 
-        //             CameraParent.transform.position.z + z_pos), i / 90);
-        //     yield return null;
-        // }
+        var targetPosition = new Vector3(
+            CameraParent.transform.position.x + x_pos,
+            CameraParent.transform.position.y,
+            CameraParent.transform.position.z + z_pos);
+        var time = 0f;
+        var duration = 0.2f;
 
-        CameraParent.transform.position = startPosition;
+        while (time < duration)
+        {
+            CameraParent.transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        isTranslating = false;
 
-
+        CameraParent.transform.position = targetPosition;
     }
 }
