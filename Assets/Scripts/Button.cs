@@ -10,7 +10,7 @@ public class Button : MonoBehaviour
 
     private void Start()
     {
-        button.onClick.AddListener(TaskOnClick);
+        //button.onClick.AddListener(TaskOnClick);
     }
 
     public void Replay()
