@@ -9,6 +9,7 @@ public class DiceBehavior : MonoBehaviour
     public int grid_x = 0;
     public int grid_y = 0;
     public GameObject Cube;
+    private bool isRotating = false;
     
     // Start is called before the first frame update
     void Start()
@@ -20,57 +21,43 @@ public class DiceBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && !isRotating)
         {
-            transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
-            Cube.transform.RotateAround(
-                new Vector3(
-                    Cube.transform.position.x - 0.5f,
-                    Cube.transform.position.y - 0.5f,
-                    Cube.transform.position.z),
-                Vector3.forward, 
-                90f);
-            grid_x -= 1;
-            grid.GetGridValue(grid_x, grid_y);
+            StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, -1, 0, Vector3.forward));
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && !isRotating)
         {
-            transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-            Cube.transform.RotateAround(
-                new Vector3(
-                    Cube.transform.position.x + 0.5f,
-                    Cube.transform.position.y - 0.5f,
-                    Cube.transform.position.z),
-                Vector3.back, 
-                90f);
-            grid_x += 1;
-            grid.GetGridValue(grid_x, grid_y);
+            StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, 1, 0, Vector3.back));
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && !isRotating)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-            Cube.transform.RotateAround(
-                new Vector3(
-                    Cube.transform.position.x,
-                    Cube.transform.position.y - 0.5f,
-                    Cube.transform.position.z + 0.5f),
-                Vector3.right, 
-                90f);
-            grid_y += 1;
-            grid.GetGridValue(grid_x, grid_y);
+            StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, 0, 1, Vector3.right));
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && !isRotating)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
-            Cube.transform.RotateAround(
-                new Vector3(
-                    Cube.transform.position.x,
-                    Cube.transform.position.y - 0.5f,
-                    Cube.transform.position.z - 0.5f),
-                Vector3.left, 
-                90f);
-            grid_y -= 1;
-            grid.GetGridValue(grid_x, grid_y);
+            StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, 0, -1, Vector3.left));
         }
+    }
+
+    IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, int x_pos, int z_pos, Vector3 axis)
+    {
+        isRotating = true;
+        int threshold = 1;
+        var point = new Vector3(
+            Cube.transform.position.x + x_rot,
+            Cube.transform.position.y - 0.5f,
+            Cube.transform.position.z + z_rot);
+        for (float i = 0; i < 90; i += threshold)
+        {
+            Cube.transform.RotateAround(point, axis, threshold);
+            yield return null;
+        }
+
+        Cube.transform.position = transform.position;
+        transform.position = new Vector3(transform.position.x + x_pos, transform.position.y, transform.position.z + z_pos);
+        grid_x += x_pos;
+        grid_y += z_pos; // Calling it Y instead of Z because grid is 2D
+        grid.GetGridValue(grid_x, grid_y);
+        isRotating = false;
     }
 }
