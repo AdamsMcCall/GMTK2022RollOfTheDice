@@ -22,7 +22,7 @@ public class PlaneBehavior : MonoBehaviour
         {
             if (i == 5)
             {
-                i = 0;
+                i = -1;
             }
             
             i = i+1;
