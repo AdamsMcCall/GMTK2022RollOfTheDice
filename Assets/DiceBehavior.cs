@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DiceBehavior : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class DiceBehavior : MonoBehaviour
     public int grid_x = 0;
     public int grid_y = 0;
     public GameObject Cube;
+    public GameObject CameraParent;
     private bool isRotating = false;
     
     // Start is called before the first frame update
@@ -24,18 +26,22 @@ public class DiceBehavior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && !isRotating)
         {
             StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, -1, 0, Vector3.forward));
+            StartCoroutine(TranslateCameraCoroutine(-1, 0));
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && !isRotating)
         {
             StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, 1, 0, Vector3.back));
+            StartCoroutine(TranslateCameraCoroutine(1, 0));
         }
         if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && !isRotating)
         {
             StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, 0, 1, Vector3.right));
+            StartCoroutine(TranslateCameraCoroutine(0, 1));
         }
         if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && !isRotating)
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, 0, -1, Vector3.left));
+            StartCoroutine(TranslateCameraCoroutine(0, -1));
         }
     }
 
@@ -59,5 +65,25 @@ public class DiceBehavior : MonoBehaviour
         grid_y += z_pos; // Calling it Y instead of Z because grid is 2D
         grid.GetGridValue(grid_x, grid_y);
         isRotating = false;
+    }
+
+    IEnumerator TranslateCameraCoroutine(float x_pos,float z_pos)
+    {
+        isRotating = true;
+        var startPosition = CameraParent.transform.position;
+        var targetPosition = new Vector3(CameraParent.)
+        // for (float i = 0; i < 90; i += 1)
+        // {
+        //     CameraParent.transform.position = Vector3.Lerp(startPosition,
+        //         new Vector3(
+        //             CameraParent.transform.position.x + x_pos,
+        //             CameraParent.transform.position.y, 
+        //             CameraParent.transform.position.z + z_pos), i / 90);
+        //     yield return null;
+        // }
+
+        CameraParent.transform.position = startPosition;
+
+
     }
 }
