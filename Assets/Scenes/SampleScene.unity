@@ -545,7 +545,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Width: 11
   Height: 100
-  DefaultFloor: {fileID: 8961034938946263673, guid: 07c5ad4e61cc7a142a03434986268065, type: 3}
+  TileTypes:
+  - {fileID: 8961034938946263673, guid: 07c5ad4e61cc7a142a03434986268065, type: 3}
+  - {fileID: 8961034938946263673, guid: 24ab0dc4632645449b0b7314d708dd38, type: 3}
 --- !u!4 &1295347302
 Transform:
   m_ObjectHideFlags: 0

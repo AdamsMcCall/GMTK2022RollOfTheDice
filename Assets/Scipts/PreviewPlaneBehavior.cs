@@ -10,16 +10,27 @@ public class PreviewPlaneBehavior : MonoBehaviour
 
     private void Start()
     {
-        RendererComponent = GetComponent<Renderer>();
-        RendererComponent.sharedMaterial = null;
     }
 
     public void ChangeFace(int number)
     {
         if (number > 0 && number <= 6)
         {
-            RendererComponent.sharedMaterial = DieFaceMaterials[number - 1];
+            if (RendererComponent != null)
+            {
+                RendererComponent.sharedMaterial = DieFaceMaterials[number - 1];
+            }
         }
+    }
+
+    public void Initialize()
+    {
+        RendererComponent = GetComponent<Renderer>();
+    }
+
+    public void Display(bool value)
+    {
+        RendererComponent.enabled = value;
     }
 
     private void Update()

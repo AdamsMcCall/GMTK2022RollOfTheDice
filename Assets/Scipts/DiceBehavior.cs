@@ -25,18 +25,24 @@ public class DiceBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior; // ne fonctionne pas
+        grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior;
         transform.position = new Vector3(grid_x, transform.position.y, grid_y);
         currentFace = DieFace.GenerateDice();
+        previewFrontPlane.Initialize();
         previewFrontPlane.ChangeFace(currentFace.Up.Value);
+        previewRightPlane.Initialize();
         previewRightPlane.ChangeFace(currentFace.Right.Value);
+        previewLeftPlane.Initialize();
         previewLeftPlane.ChangeFace(currentFace.Left.Value);
+        previewBackPlane.Initialize();
         previewBackPlane.ChangeFace(currentFace.Down.Value);
+        CheckDisplayPreview();
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckDisplayPreview();
         if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove)
         {
             StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, Direction.Left, Vector3.forward));
@@ -57,6 +63,14 @@ public class DiceBehavior : MonoBehaviour
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(Direction.Down));
         }
+    }
+
+    private void CheckDisplayPreview()
+    {
+        previewLeftPlane.Display(grid_x > 0);
+        previewRightPlane.Display(grid_x < grid.Width - 1);
+        previewFrontPlane.Display(grid_y < grid.Height - 1);
+        previewBackPlane.Display(grid_y > 0);
     }
 
     IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, Direction direction, Vector3 axis)
