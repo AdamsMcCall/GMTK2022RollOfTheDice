@@ -1,3 +1,4 @@
+using Assets.Scipts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,76 +14,97 @@ public class DiceBehavior : MonoBehaviour
     public GameObject CameraParent;
     private bool isRotating = false;
     private bool isTranslating = false;
+    private DieFace currentFace;
+    private PreviewPlaneBehavior previewRightPlane;
+
+    private bool canMove => !isRotating && !isTranslating;
     
     // Start is called before the first frame update
     void Start()
     {
         grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior; // ne fonctionne pas
         transform.position = new Vector3(grid_x, transform.position.y, grid_y);
+        currentFace = DieFace.GenerateDice();
+        previewRightPlane = GetComponentInChildren(typeof(PreviewPlaneBehavior)) as PreviewPlaneBehavior;
+        previewRightPlane.ChangeFace(currentFace.Right.Value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && !isRotating && !isTranslating)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove)
         {
-            StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, -1, 0, Vector3.forward));
-            StartCoroutine(TranslateCameraCoroutine(-1, 0));
+            StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, Direction.Left, Vector3.forward));
+            StartCoroutine(TranslateCameraCoroutine(Direction.Left));
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && !isRotating&& !isTranslating)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && canMove)
         {
-            StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, 1, 0, Vector3.back));
-            StartCoroutine(TranslateCameraCoroutine(1, 0));
+            StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, Direction.Right, Vector3.back));
+            StartCoroutine(TranslateCameraCoroutine(Direction.Right));
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && !isRotating&& !isTranslating)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && canMove)
         {
-            StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, 0, 1, Vector3.right));
-            StartCoroutine(TranslateCameraCoroutine(0, 1));
+            StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, Direction.Up, Vector3.right));
+            StartCoroutine(TranslateCameraCoroutine(Direction.Up));
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && !isRotating&& !isTranslating)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && canMove)
         {
-            StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, 0, -1, Vector3.left));
-            StartCoroutine(TranslateCameraCoroutine(0, -1));
-
+            StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
+            StartCoroutine(TranslateCameraCoroutine(Direction.Down));
         }
-
-        
     }
 
-    IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, int x_pos, int z_pos, Vector3 axis)
+    IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, Direction direction, Vector3 axis)
     {
         isRotating = true;
-        int threshold = 1;
+
+        int angle = 2;
         var point = new Vector3(
             Cube.transform.position.x + x_rot,
             Cube.transform.position.y - 0.5f,
             Cube.transform.position.z + z_rot);
-        for (float i = 0; i < 90; i += threshold)
+        for (float i = 0; i < 90; i += angle)
         {
-            Cube.transform.RotateAround(point, axis, threshold);
+            Cube.transform.RotateAround(point, axis, angle);
             yield return null;
         }
 
-        Cube.transform.position = transform.position;
-        transform.position = new Vector3(transform.position.x + x_pos, transform.position.y, transform.position.z + z_pos);
-        grid_x += x_pos;
-        grid_y += z_pos; // Calling it Y instead of Z because grid is 2D
-        grid.GetGridValue(grid_x, grid_y);
+        
         isRotating = false;
+        
+        ValidatePosition(direction);
     }
 
-    IEnumerator TranslateCameraCoroutine(float x_pos,float z_pos)
+    void ValidatePosition(Direction direction)
     {
-        isRotating = true;
+        if (!canMove)
+        {
+            return;
+        }
+
+        var directionVector = DirectionHelper.GetVectorFromDirection(direction);
+        Cube.transform.position = transform.position;
+        CameraParent.transform.position = transform.position;
+        transform.position = new Vector3(transform.position.x + directionVector.x, transform.position.y, transform.position.z + directionVector.y);
+        grid_x += (int)directionVector.x;
+        grid_y += (int)directionVector.y;
+        grid.GetGridValue(grid_x, grid_y);
+        currentFace = DirectionHelper.TurnDice(currentFace, direction);
+        previewRightPlane.ChangeFace(currentFace.Right.Value);
+    }
+
+    IEnumerator TranslateCameraCoroutine(Direction direction)
+    {
         isTranslating = true;
-        
+
+        var directionVector = DirectionHelper.GetVectorFromDirection(direction);
         var startPosition = CameraParent.transform.position;
         var targetPosition = new Vector3(
-            CameraParent.transform.position.x + x_pos,
+            CameraParent.transform.position.x + directionVector.x,
             CameraParent.transform.position.y,
-            CameraParent.transform.position.z + z_pos);
+            CameraParent.transform.position.z + directionVector.y);
         var time = 0f;
-        var duration = 0.2f;
+        var duration = 0.15f;
 
         while (time < duration)
         {
@@ -92,6 +114,6 @@ public class DiceBehavior : MonoBehaviour
         }
         isTranslating = false;
 
-        CameraParent.transform.position = targetPosition;
+        ValidatePosition(direction);
     }
 }
