@@ -13,14 +13,12 @@ public class GridBehavior : MonoBehaviour
 
     public List<int> TileProbability;
 
-    //private List<ITile> TileGrid;
-
-    private ITile[,] TileGrid;
+    private List<ITile[]> TileGrid;
 
     // Start is called before the first frame update
     void Start()
     {
-        TileGrid = new ITile[Width, Height];
+        TileGrid = new List<ITile[]>();
 
         foreach (GameObject obj in TileTypes)
         {
@@ -34,22 +32,29 @@ public class GridBehavior : MonoBehaviour
 
         for (int y = 0; y < Height; ++y)
         {
+            TileGrid.Add(new ITile[Width]);
+
             for (int x = 0; x < Width; ++x)
             {
-                GameObject obj;
-
-                if (TileTypes.Count != TileProbability.Count)
-                {
-                    obj = Instantiate(TileTypes[Random.Range(0, TileTypes.Count)], new Vector3(x, 0, y), Quaternion.identity, transform);
-                }
-                else
-                {
-                    obj = Instantiate(GetTileTypeFromProbability(), new Vector3(x, 0, y), Quaternion.identity, transform);
-                }
-
-                TileGrid[x, y] = obj.GetComponent(typeof(ITile)) as ITile;
+                InsertNewTile(x, y);
             }
         }
+    }
+
+    private void InsertNewTile(int x, int y)
+    {
+        GameObject obj;
+
+        if (TileTypes.Count != TileProbability.Count)
+        {
+            obj = Instantiate(TileTypes[Random.Range(0, TileTypes.Count)], new Vector3(x, 0, y), Quaternion.identity, transform);
+        }
+        else
+        {
+            obj = Instantiate(GetTileTypeFromProbability(), new Vector3(x, 0, y), Quaternion.identity, transform);
+        }
+
+        TileGrid[y][x] = obj.GetComponent(typeof(ITile)) as ITile;
     }
 
     private GameObject GetTileTypeFromProbability()
@@ -83,8 +88,19 @@ public class GridBehavior : MonoBehaviour
         print($"get info on {x}, {y};");
     }
 
+    public void GenerateNewLine()
+    {
+        TileGrid.Add(new ITile[Width]);
+
+        for (int x = 0; x < Width; ++x)
+        {
+            InsertNewTile(x, TileGrid.Count - 1);
+        }
+        Height += 1;
+    }
+
     public void ExecuteTile(int x, int y, int value)
     {
-        TileGrid[x, y].ApplyTileEffect(x, y, value);
+        TileGrid[y][x].ApplyTileEffect(x, y, value);
     }
 }

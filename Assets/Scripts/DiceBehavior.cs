@@ -10,6 +10,7 @@ public class DiceBehavior : MonoBehaviour
     public GameObject GridObject;
     public int grid_x = 0;
     public int grid_y = 0;
+    private int max_grid_y = 0;
     public GameObject Cube;
     public GameObject CameraParent;
     private bool isRotating = false;
@@ -62,6 +63,12 @@ public class DiceBehavior : MonoBehaviour
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(Direction.Down));
+        }
+
+        if (grid_y > max_grid_y)
+        {
+            grid.GenerateNewLine();
+            max_grid_y = grid_y;
         }
     }
 
