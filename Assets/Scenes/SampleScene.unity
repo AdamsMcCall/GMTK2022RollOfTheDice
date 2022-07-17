@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GridObject: {fileID: 1295347300}
-  grid_x: 0
-  grid_y: 0
+  grid_x: 2
+  grid_y: 2
   Cube: {fileID: 1589859242}
   CameraParent: {fileID: 860904769}
   previewFrontPlane: {fileID: 1503956313}
@@ -765,14 +765,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b2f0f01ccc2494a879ba2dfd69c4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 11
-  Height: 100
+  Width: 5
+  Height: 5
   TileTypes:
   - {fileID: 8961034938946263673, guid: 07c5ad4e61cc7a142a03434986268065, type: 3}
   - {fileID: 8961034938946263673, guid: 24ab0dc4632645449b0b7314d708dd38, type: 3}
   - {fileID: 8961034938946263673, guid: 19d8990f617775044b46209e81c0f43c, type: 3}
-  TileProbability: 050000000500000000000000
+  - {fileID: 8961034938946263673, guid: ad27911869b1d9c479108a3b12362894, type: 3}
+  TileProbability: 05000000020000000000000000000000
   GameEnvironment: {fileID: 2043046086}
+  EmptyTile: {fileID: 8961034938946263673, guid: ad27911869b1d9c479108a3b12362894, type: 3}
 --- !u!4 &1295347302
 Transform:
   m_ObjectHideFlags: 0

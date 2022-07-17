@@ -10,7 +10,6 @@ public class DiceBehavior : MonoBehaviour
     public GameObject GridObject;
     public int grid_x = 0;
     public int grid_y = 0;
-    private int max_grid_y = 0;
     public GameObject Cube;
     public GameObject CameraParent;
     private bool isRotating = false;
@@ -20,6 +19,7 @@ public class DiceBehavior : MonoBehaviour
     public PreviewPlaneBehavior previewRightPlane;
     public PreviewPlaneBehavior previewLeftPlane;
     public PreviewPlaneBehavior previewBackPlane;
+    private bool startTileRemoved = false;
 
     private bool canMove => !isRotating && !isTranslating;
     
@@ -44,40 +44,40 @@ public class DiceBehavior : MonoBehaviour
     void Update()
     {
         CheckDisplayPreview();
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Left))
         {
             StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, Direction.Left, Vector3.forward));
             StartCoroutine(TranslateCameraCoroutine(Direction.Left));
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && canMove)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Right))
         {
             StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, Direction.Right, Vector3.back));
             StartCoroutine(TranslateCameraCoroutine(Direction.Right));
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && canMove)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Up))
         {
             StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, Direction.Up, Vector3.right));
             StartCoroutine(TranslateCameraCoroutine(Direction.Up));
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && canMove)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Down))
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(Direction.Down));
         }
 
-        if (grid_y > max_grid_y)
+        if (!startTileRemoved)
         {
-            grid.GenerateNewLine();
-            max_grid_y = grid_y;
+            grid.RemoveTile(grid_x, grid_y);
+            startTileRemoved = true;
         }
     }
 
     private void CheckDisplayPreview()
     {
-        previewLeftPlane.Display(grid_x > 0);
-        previewRightPlane.Display(grid_x < grid.Width - 1);
-        previewFrontPlane.Display(grid_y < grid.Height - 1);
-        previewBackPlane.Display(grid_y > 0);
+        previewLeftPlane.Display(grid.IsTileAccessible(grid_x, grid_y, Direction.Left));
+        previewRightPlane.Display(grid.IsTileAccessible(grid_x, grid_y, Direction.Right));
+        previewFrontPlane.Display(grid.IsTileAccessible(grid_x, grid_y, Direction.Up));
+        previewBackPlane.Display(grid.IsTileAccessible(grid_x, grid_y, Direction.Down));
     }
 
     IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, Direction direction, Vector3 axis)
@@ -122,6 +122,7 @@ public class DiceBehavior : MonoBehaviour
         previewBackPlane.ChangeFace(currentFace.Down.Value);
         
         grid.ExecuteTile(grid_x, grid_y, currentFace.Value);
+        grid.RemoveTile(grid_x, grid_y);
     }
 
     IEnumerator TranslateCameraCoroutine(Direction direction)

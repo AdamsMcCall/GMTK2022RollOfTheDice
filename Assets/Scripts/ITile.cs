@@ -12,5 +12,7 @@ namespace Assets.Scipts
         void ApplyTileEffect(int x, int y, int value);
 
         void Initialize(GameObject gameEnv);
+
+        public bool isAccessible { get; }
     }
 }

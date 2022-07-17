@@ -15,12 +15,17 @@ public class GridBehavior : MonoBehaviour
 
     private List<ITile[]> TileGrid;
 
+    private List<GameObject[]> TileGridObject;
+
     public GameObject GameEnvironment;
+
+    public GameObject EmptyTile;
 
     // Start is called before the first frame update
     void Start()
     {
         TileGrid = new List<ITile[]>();
+        TileGridObject = new List<GameObject[]>();
 
         foreach (GameObject obj in TileTypes)
         {
@@ -35,6 +40,7 @@ public class GridBehavior : MonoBehaviour
         for (int y = 0; y < Height; ++y)
         {
             TileGrid.Add(new ITile[Width]);
+            TileGridObject.Add(new GameObject[Width]);
 
             for (int x = 0; x < Width; ++x)
             {
@@ -56,6 +62,7 @@ public class GridBehavior : MonoBehaviour
             obj = Instantiate(GetTileTypeFromProbability(), new Vector3(x, 0, y), Quaternion.identity, transform);
         }
 
+        TileGridObject[y][x] = obj;
         var tile = obj.GetComponent(typeof(ITile)) as ITile;
         tile.Initialize(GameEnvironment);
         TileGrid[y][x] = tile;
@@ -79,6 +86,37 @@ public class GridBehavior : MonoBehaviour
             ++j;
         }
         return TileTypes[Random.Range(0, TileTypes.Count)];
+    }
+
+    public void RemoveTile(int x, int y)
+    {
+        var obj = Instantiate(EmptyTile, new Vector3(x, 0, y), Quaternion.identity, transform);
+
+        Destroy(TileGridObject[y][x]);
+        TileGridObject[y][x] = obj;
+        var tile = obj.GetComponent(typeof(ITile)) as ITile;
+        tile.Initialize(GameEnvironment);
+        TileGrid[y][x] = tile;
+    }
+
+    public bool IsTileAccessible(int x, int y, Direction direction)
+    {
+        try
+        {
+            var directionVector = DirectionHelper.GetVectorFromDirection(direction);
+
+            if (x + (int)directionVector.x < 0 || x + (int)directionVector.x >= Width ||
+                y + (int)directionVector.y < 0 || y + (int)directionVector.y >= Height)
+            {
+                return false;
+            }
+
+            return TileGrid[y + (int)directionVector.y][x + (int)directionVector.x].isAccessible;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
     }
 
     // Update is called once per frame
@@ -106,5 +144,6 @@ public class GridBehavior : MonoBehaviour
     public void ExecuteTile(int x, int y, int value)
     {
         TileGrid[y][x].ApplyTileEffect(x, y, value);
+
     }
 }

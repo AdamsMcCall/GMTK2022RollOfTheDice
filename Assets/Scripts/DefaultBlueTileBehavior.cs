@@ -11,19 +11,21 @@ public class DefaultBlueTileBehavior : MonoBehaviour, ITile
     private SliderControl SliderScript;
     private TextMeshProUGUI Textou;
 
+    public bool isAccessible => true;
+
     public void ApplyTileEffect(int x, int y, int value)
     {
         print($"Arrived on Blue tile at {x}, {y} with value {value}");
-        SliderScript.slider.value -= value;
-        SliderScript.score -= value;
-        Textou.text = "Score :"+SliderScript.score;
+        //SliderScript.slider.value -= value;
+        //SliderScript.score -= value;
+        //Textou.text = "Score :"+SliderScript.score;
     }
 
     public void Initialize(GameObject gameEnv)
     {
         Plaisir = gameEnv;
-        SliderScript = Plaisir.GetComponentInChildren<SliderControl>();
-        Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
+        //SliderScript = Plaisir.GetComponentInChildren<SliderControl>();
+        //Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
