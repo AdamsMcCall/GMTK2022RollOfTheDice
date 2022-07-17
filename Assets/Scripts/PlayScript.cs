@@ -24,7 +24,7 @@ public class PlayScript : MonoBehaviour
     }
     public void Quit()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
 }
