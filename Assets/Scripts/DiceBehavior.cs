@@ -29,6 +29,7 @@ public class DiceBehavior : MonoBehaviour
         grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior;
         transform.position = new Vector3(grid_x, transform.position.y, grid_y);
         currentFace = DieFace.GenerateDice();
+        ShuffleDice();
         previewFrontPlane.Initialize();
         previewFrontPlane.ChangeFace(currentFace.Up.Value);
         previewRightPlane.Initialize();
@@ -99,6 +100,44 @@ public class DiceBehavior : MonoBehaviour
         isRotating = false;
         
         ValidatePosition(direction);
+    }
+
+    private void RotateDiceInstant(float x_rot, float z_rot, Direction direction, Vector3 axis)
+    {
+        var point = new Vector3(
+            Cube.transform.position.x + x_rot,
+            Cube.transform.position.y - 0.5f,
+            Cube.transform.position.z + z_rot);
+        Cube.transform.RotateAround(point, axis, 90);
+    }
+
+    private void ShuffleDice()
+    {
+        for (int i = 0; i < 20; ++i)
+        {
+            var rng = Random.Range(0, 4);
+
+            switch (rng)
+            {
+                case 0:
+                    RotateDiceInstant(-0.5f, 0, Direction.Left, Vector3.forward);
+                    currentFace = DirectionHelper.TurnDice(currentFace, Direction.Left);
+                    break;
+                case 1:
+                    RotateDiceInstant(+0.5f, 0, Direction.Right, Vector3.back);
+                    currentFace = DirectionHelper.TurnDice(currentFace, Direction.Right);
+                    break;
+                case 2:
+                    RotateDiceInstant(0, +0.5f, Direction.Up, Vector3.right);
+                    currentFace = DirectionHelper.TurnDice(currentFace, Direction.Up);
+                    break;
+                case 3:
+                    RotateDiceInstant(0, -0.5f, Direction.Down, Vector3.left);
+                    currentFace = DirectionHelper.TurnDice(currentFace, Direction.Down);
+                    break;
+            }
+        }
+        Cube.transform.position = transform.position;
     }
 
     void ValidatePosition(Direction direction)
