@@ -7,20 +7,17 @@ public class LevelManagement : MonoBehaviour
 {
     public List<GameObject> Levels;
     public GameObject LevelPrefab;
+    private Scorekeeper scoreKeeper;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        scoreKeeper = GetComponentInChildren<Scorekeeper>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GoToNextLevel();
-        }
     }
 
     public void GoToNextLevel()
@@ -44,7 +41,9 @@ public class LevelManagement : MonoBehaviour
 
         var newLevel = Instantiate(LevelPrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z + 20), Quaternion.identity, transform);
         var grid = newLevel.GetComponentInChildren<GridBehavior>();
-        //Increase difficulty
+
+        scoreKeeper.goal += 40;
+
         grid.GameEnvironment = this.gameObject;
         grid.GenerateGrid();
         Levels.Add(newLevel);

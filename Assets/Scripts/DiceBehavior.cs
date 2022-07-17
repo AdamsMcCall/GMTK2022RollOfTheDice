@@ -2,6 +2,7 @@ using Assets.Scipts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class DiceBehavior : MonoBehaviour
@@ -23,6 +24,7 @@ public class DiceBehavior : MonoBehaviour
     public bool preventMove = true;
     public bool AutoStart = false;
     private bool isInitialized = false;
+    private AudioSource audiodata;
 
     public bool canMove => (!isRotating && !isTranslating) || preventMove;
     
@@ -33,6 +35,7 @@ public class DiceBehavior : MonoBehaviour
         {
             Initialize();
         }
+        audiodata = GetComponent<AudioSource>();
     }
 
     public void Initialize()
@@ -99,6 +102,7 @@ public class DiceBehavior : MonoBehaviour
             !grid.IsTileAccessible(grid_x, grid_y, Direction.Down))
         {
             preventMove = true;
+            StartCoroutine(SendToGameOver());
         }
 
         if (!startTileRemoved)
@@ -106,6 +110,12 @@ public class DiceBehavior : MonoBehaviour
             grid.RemoveTile(grid_x, grid_y);
             startTileRemoved = true;
         }
+    }
+
+    IEnumerator SendToGameOver()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("GameoverScreen", LoadSceneMode.Single);
     }
 
     private void CheckDisplayPreview()
@@ -118,6 +128,7 @@ public class DiceBehavior : MonoBehaviour
 
     IEnumerator RotateDiceMeshRoutine(float x_rot, float z_rot, Direction direction, Vector3 axis)
     {
+        audiodata.Play(0);
         isRotating = true;
 
         int angle = 2;

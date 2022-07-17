@@ -16,8 +16,9 @@ public class DefaultGreenTileBehavior : MonoBehaviour, ITile
     public void ApplyTileEffect(int x, int y, int value)
     {
         print($"Arrived on green tile at {x}, {y} with value {value}");
-        scorekeeperscript.score += value;
-        Textou.text = "Score :"+scorekeeperscript.score;
+        //scorekeeperscript.score += value;
+        scorekeeperscript.AddToScore(value);
+        Textou.text = "Score : " + scorekeeperscript.score;
     }
 
     public void Initialize(GameObject gameEnv)

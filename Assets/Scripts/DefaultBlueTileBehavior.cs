@@ -17,7 +17,7 @@ public class DefaultBlueTileBehavior : MonoBehaviour, ITile
     {
         print($"Arrived on Blue tile at {x}, {y} with value {value}");
         scorekeeperscript.score -= value;
-        Textou.text = "Score :"+scorekeeperscript.score;
+        Textou.text = "Score :" + scorekeeperscript.score;
     }
 
     public void Initialize(GameObject gameEnv)

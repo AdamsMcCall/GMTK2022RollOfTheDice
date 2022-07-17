@@ -9,15 +9,32 @@ using UnityEngine.UI;
 public class Scorekeeper : MonoBehaviour
 {
     public int score = 0;
-    public int goal = 10;
+    public int goal = 20;
     private TextMeshProUGUI goaltext;
+    public GameObject GameEnv;
+
     private void Start()
     {
         goaltext = gameObject.GetComponentInChildren<TextMeshProUGUI>();
     }
 
+    public void AddToScore(int value)
+    {
+        score += value;
+        if (score >= goal)
+        {
+            var levelManagement = GameEnv.GetComponent<LevelManagement>();
+            levelManagement.GoToNextLevel();
+        }
+    }
+
+    public void SubToScore(int value)
+    {
+        score -= value;
+    }
+
     void Update()
     {
-        goaltext.text = "goal : " + goal;
+        goaltext.text = "Goal : " + goal;
     }
 }
