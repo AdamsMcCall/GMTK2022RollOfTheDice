@@ -9,11 +9,13 @@ public class LevelManagement : MonoBehaviour
     public GameObject LevelPrefab;
     private Scorekeeper scoreKeeper;
     private int levelNumber = 3;
+    private AudioSource audiodata;
 
     // Start is called before the first frame update
     void Start()
     {
         scoreKeeper = GetComponentInChildren<Scorekeeper>();
+        audiodata = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,6 +37,8 @@ public class LevelManagement : MonoBehaviour
 
         StartCoroutine(TranslateLevelRoutine(currentLevel, false));
         StartCoroutine(TranslateLevelRoutine(nextLevel, true));
+
+        audiodata.Play(0);
     }
 
     void OnTranslateRoutineDone(GameObject level)
