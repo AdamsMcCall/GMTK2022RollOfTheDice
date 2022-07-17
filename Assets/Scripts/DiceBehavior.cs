@@ -21,7 +21,7 @@ public class DiceBehavior : MonoBehaviour
     public PreviewPlaneBehavior previewBackPlane;
     private bool startTileRemoved = false;
 
-    private bool canMove => !isRotating && !isTranslating;
+    public bool canMove => !isRotating && !isTranslating;
     
     // Start is called before the first frame update
     void Start()
