@@ -20,12 +20,22 @@ public class DiceBehavior : MonoBehaviour
     public PreviewPlaneBehavior previewLeftPlane;
     public PreviewPlaneBehavior previewBackPlane;
     private bool startTileRemoved = false;
-    private bool preventMove = false;
+    public bool preventMove = true;
+    public bool AutoStart = false;
+    private bool isInitialized = false;
 
     public bool canMove => (!isRotating && !isTranslating) || preventMove;
     
     // Start is called before the first frame update
     void Start()
+    {
+        if (AutoStart)
+        {
+            Initialize();
+        }
+    }
+
+    public void Initialize()
     {
         grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior;
         //transform.position = new Vector3(grid.transform.position.x + grid_x, transform.position.y, grid.transform.position.z + grid_y);
@@ -41,6 +51,8 @@ public class DiceBehavior : MonoBehaviour
         previewBackPlane.Initialize();
         previewBackPlane.ChangeFace(currentFace.Down.Value);
         CheckDisplayPreview();
+        preventMove = true;
+        isInitialized = true;
     }
 
     void GetRandomPositionOnGrid()
@@ -54,6 +66,11 @@ public class DiceBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isInitialized)
+        {
+            return;
+        }
+
         CheckDisplayPreview();
         if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Left))
         {

@@ -21,20 +21,32 @@ public class GridBehavior : MonoBehaviour
 
     public GameObject EmptyTile;
 
+    public bool AutoGenerate = false;
+
     private void Awake()
     {
-        // + 0.5f needed for some reasons
-        transform.position = new Vector3(transform.position.x - Width / 2f + 0.5f, transform.position.y, transform.position.z - Height / 2f + 0.5f);
+        if (AutoGenerate)
+        {
+            // + 0.5f needed for some reasons
+            transform.position = new Vector3(transform.position.x - Width / 2f + 0.5f, transform.position.y, transform.position.z - Height / 2f + 0.5f);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateGrid();
+        if (AutoGenerate)
+            GenerateGrid();
     }
 
-    private void GenerateGrid()
+    public void GenerateGrid()
     {
+        if (!AutoGenerate)
+        {
+            // + 0.5f needed for some reasons
+            transform.position = new Vector3(transform.position.x - Width / 2f + 0.5f, transform.position.y, transform.position.z - Height / 2f + 0.5f);
+        }
+
         TileGrid = new List<ITile[]>();
         TileGridObject = new List<GameObject[]>();
 
