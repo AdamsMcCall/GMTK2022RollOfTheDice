@@ -28,7 +28,8 @@ public class DiceBehavior : MonoBehaviour
     void Start()
     {
         grid = GridObject.GetComponent(typeof(GridBehavior)) as GridBehavior;
-        transform.position = new Vector3(grid_x, transform.position.y, grid_y);
+        //transform.position = new Vector3(grid.transform.position.x + grid_x, transform.position.y, grid.transform.position.z + grid_y);
+        GetRandomPositionOnGrid();
         currentFace = DieFace.GenerateDice();
         ShuffleDice();
         previewFrontPlane.Initialize();
@@ -42,6 +43,14 @@ public class DiceBehavior : MonoBehaviour
         CheckDisplayPreview();
     }
 
+    void GetRandomPositionOnGrid()
+    {
+        grid_x = Random.Range(0, grid.Width);
+        grid_y = Random.Range(0, grid.Height);
+
+        transform.position = new Vector3(grid.transform.position.x + grid_x, transform.position.y, grid.transform.position.z + grid_y);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -49,22 +58,22 @@ public class DiceBehavior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) && grid_x > 0 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Left))
         {
             StartCoroutine(RotateDiceMeshRoutine(-0.5f, 0, Direction.Left, Vector3.forward));
-            StartCoroutine(TranslateCameraCoroutine(Direction.Left));
+            //StartCoroutine(TranslateCameraCoroutine(Direction.Left));
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) && grid_x < grid.Width - 1 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Right))
         {
             StartCoroutine(RotateDiceMeshRoutine(+0.5f, 0, Direction.Right, Vector3.back));
-            StartCoroutine(TranslateCameraCoroutine(Direction.Right));
+            //StartCoroutine(TranslateCameraCoroutine(Direction.Right));
         }
         if (Input.GetKeyDown(KeyCode.UpArrow) && grid_y < grid.Height - 1 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Up))
         {
             StartCoroutine(RotateDiceMeshRoutine(0, +0.5f, Direction.Up, Vector3.right));
-            StartCoroutine(TranslateCameraCoroutine(Direction.Up));
+            //StartCoroutine(TranslateCameraCoroutine(Direction.Up));
         }
         if (Input.GetKeyDown(KeyCode.DownArrow) && grid_y > 0 && canMove && grid.IsTileAccessible(grid_x, grid_y, Direction.Down))
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
-            StartCoroutine(TranslateCameraCoroutine(Direction.Down));
+            //StartCoroutine(TranslateCameraCoroutine(Direction.Down));
         }
 
         if (!grid.IsTileAccessible(grid_x, grid_y, Direction.Left) &&

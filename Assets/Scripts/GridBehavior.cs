@@ -21,8 +21,19 @@ public class GridBehavior : MonoBehaviour
 
     public GameObject EmptyTile;
 
+    private void Awake()
+    {
+        // + 0.5f needed for some reasons
+        transform.position = new Vector3(transform.position.x - Width / 2f + 0.5f, transform.position.y, transform.position.z - Height / 2f + 0.5f);
+    }
+
     // Start is called before the first frame update
     void Start()
+    {
+        GenerateGrid();
+    }
+
+    private void GenerateGrid()
     {
         TileGrid = new List<ITile[]>();
         TileGridObject = new List<GameObject[]>();
@@ -55,11 +66,11 @@ public class GridBehavior : MonoBehaviour
 
         if (TileTypes.Count != TileProbability.Count)
         {
-            obj = Instantiate(TileTypes[Random.Range(0, TileTypes.Count)], new Vector3(x, 0, y), Quaternion.identity, transform);
+            obj = Instantiate(TileTypes[Random.Range(0, TileTypes.Count)], new Vector3(transform.position.x + x, 0, transform.position.z + y), Quaternion.identity, transform);
         }
         else
         {
-            obj = Instantiate(GetTileTypeFromProbability(), new Vector3(x, 0, y), Quaternion.identity, transform);
+            obj = Instantiate(GetTileTypeFromProbability(), new Vector3(transform.position.x + x, 0, transform.position.z + y), Quaternion.identity, transform);
         }
 
         TileGridObject[y][x] = obj;
@@ -90,7 +101,7 @@ public class GridBehavior : MonoBehaviour
 
     public void RemoveTile(int x, int y)
     {
-        var obj = Instantiate(EmptyTile, new Vector3(x, 0, y), Quaternion.identity, transform);
+        var obj = Instantiate(EmptyTile, new Vector3(transform.position.x + x, 0, transform.position.z + y), Quaternion.identity, transform);
 
         Destroy(TileGridObject[y][x]);
         TileGridObject[y][x] = obj;
