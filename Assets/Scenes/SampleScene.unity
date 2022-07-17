@@ -806,7 +806,8 @@ MonoBehaviour:
   - {fileID: 8961034938946263673, guid: 07c5ad4e61cc7a142a03434986268065, type: 3}
   - {fileID: 8961034938946263673, guid: 24ab0dc4632645449b0b7314d708dd38, type: 3}
   - {fileID: 8961034938946263673, guid: 19d8990f617775044b46209e81c0f43c, type: 3}
-  TileProbability: 640000000500000002000000
+  TileProbability: 050000000500000000000000
+  GameEnvironment: {fileID: 2043046086}
 --- !u!4 &1295347302
 Transform:
   m_ObjectHideFlags: 0
@@ -1378,6 +1379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34ef4c46378e8a74ab446fd1350a6e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerDuration: 0.5
   slider: {fileID: 1993100464}
   score: 0
 --- !u!114 &1993100464
@@ -1425,9 +1427,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 15
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 15
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

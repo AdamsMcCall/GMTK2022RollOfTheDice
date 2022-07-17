@@ -20,7 +20,7 @@ public class PlayAgainButtonscripts : MonoBehaviour
 
     public void Replay()
     {
-        SceneManager.LoadScene("SampleScene",LoadSceneMode.Single);
+        SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
     }
     public void Quit()
     {

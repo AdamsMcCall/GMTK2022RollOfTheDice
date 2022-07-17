@@ -1,25 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SliderControl : MonoBehaviour
 {
-    private float timer = 1.5f;
+    public float timerDuration = 0.5f;
+    private float remainingTime;
     public Slider slider;
     public int score = 0;
+
+    private void Start()
+    {
+        remainingTime = timerDuration;
+    }
+
     void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        remainingTime -= Time.deltaTime;
+
+        if (remainingTime <= 0)
         {
-            timer = 1.5f;
-            slider.value -= 10;
+            remainingTime = timerDuration;
+            slider.value -= 2;
         }
 
         if (slider.value == 0)
         {
-            
+            SceneManager.LoadScene("GameoverScreen", LoadSceneMode.Single);
         }
     }
 }

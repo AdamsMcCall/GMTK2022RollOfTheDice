@@ -15,6 +15,8 @@ public class GridBehavior : MonoBehaviour
 
     private List<ITile[]> TileGrid;
 
+    public GameObject GameEnvironment;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +56,9 @@ public class GridBehavior : MonoBehaviour
             obj = Instantiate(GetTileTypeFromProbability(), new Vector3(x, 0, y), Quaternion.identity, transform);
         }
 
-        TileGrid[y][x] = obj.GetComponent(typeof(ITile)) as ITile;
+        var tile = obj.GetComponent(typeof(ITile)) as ITile;
+        tile.Initialize(GameEnvironment);
+        TileGrid[y][x] = tile;
     }
 
     private GameObject GetTileTypeFromProbability()

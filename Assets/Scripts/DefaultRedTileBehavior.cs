@@ -10,6 +10,7 @@ public class DefaultRedTileBehavior : MonoBehaviour, ITile
     private GameObject Plaisir;
     private SliderControl SliderScript;
     private TextMeshProUGUI Textou;
+
     public void ApplyTileEffect(int x, int y, int value)
     {
         print($"Arrived on red tile at {x}, {y} with value {value}");
@@ -18,9 +19,9 @@ public class DefaultRedTileBehavior : MonoBehaviour, ITile
         Textou.text = "Score :"+SliderScript.score;
     }
 
-    void Start()
+    public void Initialize(GameObject gameEnv)
     {
-        Plaisir = GameObject.FindGameObjectsWithTag("Environment")[0];
+        Plaisir = gameEnv;
         SliderScript = Plaisir.GetComponentInChildren<SliderControl>();
         Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
     }
