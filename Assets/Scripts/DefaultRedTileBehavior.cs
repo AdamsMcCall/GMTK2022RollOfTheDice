@@ -8,7 +8,7 @@ using UnityEngine;
 public class DefaultRedTileBehavior : MonoBehaviour, ITile
 {
     private GameObject Plaisir;
-    private SliderControl SliderScript;
+    private Scorekeeper scorekeeperscript;
     private TextMeshProUGUI Textou;
 
     public bool isAccessible => true;
@@ -16,16 +16,15 @@ public class DefaultRedTileBehavior : MonoBehaviour, ITile
     public void ApplyTileEffect(int x, int y, int value)
     {
         print($"Arrived on red tile at {x}, {y} with value {value}");
-        //SliderScript.slider.value -= value;
-        //SliderScript.score -= value;
-        //Textou.text = "Score :"+SliderScript.score;
+        scorekeeperscript.score -= value;
+        Textou.text = "Score :"+scorekeeperscript.score;
     }
 
     public void Initialize(GameObject gameEnv)
     {
         Plaisir = gameEnv;
-        //SliderScript = Plaisir.GetComponentInChildren<SliderControl>();
-        //Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
+        scorekeeperscript = Plaisir.GetComponentInChildren<Scorekeeper>();
+        Textou = Plaisir.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
