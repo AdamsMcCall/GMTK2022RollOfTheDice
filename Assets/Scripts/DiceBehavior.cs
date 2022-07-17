@@ -20,8 +20,9 @@ public class DiceBehavior : MonoBehaviour
     public PreviewPlaneBehavior previewLeftPlane;
     public PreviewPlaneBehavior previewBackPlane;
     private bool startTileRemoved = false;
+    private bool preventMove = false;
 
-    public bool canMove => !isRotating && !isTranslating;
+    public bool canMove => (!isRotating && !isTranslating) || preventMove;
     
     // Start is called before the first frame update
     void Start()
@@ -64,6 +65,14 @@ public class DiceBehavior : MonoBehaviour
         {
             StartCoroutine(RotateDiceMeshRoutine(0, -0.5f, Direction.Down, Vector3.left));
             StartCoroutine(TranslateCameraCoroutine(Direction.Down));
+        }
+
+        if (!grid.IsTileAccessible(grid_x, grid_y, Direction.Left) &&
+            !grid.IsTileAccessible(grid_x, grid_y, Direction.Right) &&
+            !grid.IsTileAccessible(grid_x, grid_y, Direction.Up) &&
+            !grid.IsTileAccessible(grid_x, grid_y, Direction.Down))
+        {
+            preventMove = true;
         }
 
         if (!startTileRemoved)
