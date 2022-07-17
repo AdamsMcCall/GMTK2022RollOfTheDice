@@ -28,7 +28,7 @@ public class SliderControl : MonoBehaviour
 
         if (slider.value == 0)
         {
-            SceneManager.LoadScene("GameoverScreen", LoadSceneMode.Single);
+            //SceneManager.LoadScene("GameoverScreen", LoadSceneMode.Single);
         }
     }
 }
