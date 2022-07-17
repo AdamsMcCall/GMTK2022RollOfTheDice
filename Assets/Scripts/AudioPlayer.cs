@@ -14,7 +14,7 @@ public class AudioPlayer : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) && dicy.canMove && !audiodata.isPlaying)
+        if ((Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")) && !dicy.canMove && !audiodata.isPlaying)
         {
             audiodata.Play(0);
         }
